@@ -1,0 +1,14 @@
+export const notes = [
+  {
+    "id": "1",
+    "title": "title 1",
+    "text": "Note 1 test",
+    "typeId": "1"
+  },
+  {
+    "id": "2",
+    "title": "title 2",
+    "text": "Note 2 test",
+    "typeId": "2"
+  }
+]

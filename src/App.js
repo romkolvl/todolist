@@ -66,7 +66,7 @@ class App extends Component {
 export default App;
 
 const Links = () => (
-  <Navbar bsStyle="expand">
+  <Navbar bsStyle="default" bsClass="expand">
     <Navbar.Header>
       <Navbar.Brand>
         TO-DO LIST

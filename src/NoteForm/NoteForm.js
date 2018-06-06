@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-//import PropType from 'prop-types';
 import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.css";
 import { connect } from 'react-redux';
-import { addNote, changeInputValue } from '../ActionCreators';
+import { addNote, changeInputValue, clearForm } from '../ActionCreators';
 import { v4 } from 'uuid';
 import axios from 'axios';
 
@@ -13,52 +12,42 @@ class NoteForm extends Component {
     super(props);
     this.state = {
       types: [],
-      noteTitle: '',
-      noteText: '',
-      noteType: '1'
     };
   }
 
   componentDidMount() {
     axios.get('../types.json')
       .then(res => {
-        const types = res.data;
-        this.setState({
-          types: [...types]
-        });
+        setTimeout(() => {
+          const types = res.data;
+          this.setState({
+            types: [...types]
+          });
+        }, 1500);
       });
-  }
-
-  handleChangeDescription = (e) => {
-    this.setState({
-      noteText: e.target.value,
-    });
-  }
-
-  handleChangeTitle = (e) => {
-    this.setState({
-      noteTitle: e.target.value,
-    });
-  }
-
-  handleChangeType = (e) => {
-    this.setState({
-      noteType: e.target.value
-    });
   }
 
   addNote = () => {
     this.props.addNote({
       id: v4(),
-      title: this.state.noteTitle,
-      text: this.state.noteText,
-      typeId: this.state.noteType
+      typeId: this.props.typeInput,
+      title: this.props.titleInput,
+      text: this.props.descriptionInput,
     });
 
-    this.setState({
-      noteTitle: '',
-      noteText: ''
-    });
+    this.clearForm();
+  }
+
+  changeInputValue = (e) => {
+    this.props.changeInputValue(
+      e.target.name,
+      e.target.value,
+    );
+  }
+
+  clearForm = () => {
+    console.log('clear function 1');
+    this.props.clearForm();
   }
 
   render() {
@@ -72,7 +61,8 @@ class NoteForm extends Component {
                 <FormControl
                   componentClass="select"
                   placeholder="Note type"
-                  onChange={this.handleChangeType}>
+                  onChange={this.changeInputValue}
+                  name="typeInput">
                   {
                     this.state.types && this.state.types.length && this.state.types.map(type =>
                       <option key={type.id} value={type.id}>
@@ -86,16 +76,18 @@ class NoteForm extends Component {
                 <ControlLabel>Write note title ...</ControlLabel>
                 <FormControl
                   type="text"
-                  value={this.state.noteTitle}
-                  onChange={this.handleChangeTitle}
+                  value={this.props.titleInput}
+                  onChange={this.changeInputValue}
+                  name="titleInput"
                 />
               </FormGroup>
               <FormGroup controlId="formControlsTextarea">
                 <ControlLabel>Write note text ...</ControlLabel>
                 <FormControl
                   componentClass="textarea"
-                  value={this.state.noteText}
-                  onChange={this.handleChangeDescription}
+                  value={this.props.descriptionInput}
+                  onChange={this.changeInputValue}
+                  name="descriptionInput"
                 />
               </FormGroup>
               <Button type="submit" className="add-button" onClick={this.addNote} >Add note</Button>
@@ -107,6 +99,16 @@ class NoteForm extends Component {
   }
 }
 
-export default connect(null, (dispatch, ownProps) => ({
-  addNote: (note) => dispatch(addNote(note))
+const mapStateToProps = state => {
+  return {
+    typeInput: state.formAddNote.typeInput,
+    titleInput: state.formAddNote.titleInput,
+    descriptionInput: state.formAddNote.descriptionInput,
+  }
+}
+
+export default connect(mapStateToProps, (dispatch, ownProps) => ({
+  addNote: (note) => dispatch(addNote(note)),
+  changeInputValue: (inputName, inputValue) => dispatch(changeInputValue(inputName, inputValue)),
+  clearForm: () => dispatch(clearForm())
 }))(NoteForm);

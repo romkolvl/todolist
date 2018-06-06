@@ -1,4 +1,4 @@
-import { ADD_NOTE, DELETE_NOTE, CHANGE_INPUT } from '../constatnts';
+import { ADD_NOTE, DELETE_NOTE, CHANGE_INPUT, CLEAR_FORM } from '../constatnts';
 
 export function deleteNote(id) {
   return {
@@ -14,9 +14,15 @@ export function addNote(note) {
   };
 }
 
-export function changeInputValue(nameInput, valueInput) {
+export function changeInputValue(name, value) {
   return {
     type: CHANGE_INPUT,
-    payload: { nameInput, valueInput }
+    payload: { name, value }
+  }
+}
+
+export function clearForm() {
+  return {
+    type: CLEAR_FORM,
   }
 }

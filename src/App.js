@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import NoteList from './Note/NoteList'
-import NoteForm from './NoteForm/NoteForm'
+import FormContainer from './NoteContainer'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Navbar, NavItem, Nav } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
@@ -10,37 +10,6 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 class App extends Component {
-  /*constructor(props) {
-    super(props);
-    this.state = {
-      notes: [
-        { id: 1, title: "title 1", text: "Note 1 test" },
-        { id: 2, title: "title 2", text: "Note 2 test" }
-      ],
-    }
-  }*/
-
-  /*addNote = (noteTitle, noteText) => {
-    const prevNotes = [...this.state.notes];
-
-    prevNotes.push({
-      id: prevNotes[prevNotes.length - 1].id + 1,
-      title: noteTitle,
-      text: noteText
-    });
-
-    this.setState({
-      notes: prevNotes,
-    });
-  }
-
-  removeNote = (id) => {
-    const notes = this.state.notes.filter(note => note.id != id)
-
-    this.setState({
-      notes: notes,
-    });
-  }*/
 
   render() {
     return (
@@ -53,7 +22,7 @@ class App extends Component {
                 <NoteList />
               </Route>
               <Route path='/add-note'>
-                <NoteForm />
+                <FormContainer />
               </Route>
             </Switch>
           </div>
